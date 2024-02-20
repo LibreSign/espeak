@@ -1,5 +1,7 @@
 <?php
 
+namespace Libresign\Test;
+
 use Libresign\Espeak\Espeak;
 use PHPUnit\Framework\TestCase;
 

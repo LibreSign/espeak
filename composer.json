@@ -8,6 +8,11 @@
             "Libresign\\Espeak\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Libresign\\Test\\": "tests/Unit"
+        }
+    },
     "authors": [
         {
             "name": "librecode"
@@ -18,9 +23,10 @@
         "bamarni/composer-bin-plugin": "^1.8"
     },
     "scripts": {
-        "cs:check": "phpcs --standard=PSR12 -n src -n tests",
-        "cs:fix": "phpcbf --standard=PSR12 -n src -n tests",
-        "test:unit": "phpunit"
+        "cs:check": "phpcs --standard=PSR12 -n src tests/Unit",
+        "cs:fix": "phpcbf --standard=PSR12 -n src tests/Unit",
+        "test:unit": "phpunit --no-coverage",
+        "test:coverage": "XDEBUG_MODE=coverage phpunit"
     },
     "config": {
         "allow-plugins": {
