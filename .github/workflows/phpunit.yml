@@ -28,7 +28,7 @@ jobs:
       - name: PHPUnit
         env:
           XDEBUG_MODE: ${{ matrix.xdebug_mode }}
-        run: ./vendor/bin/phpunit -c phpunit.xml
+        run: composer run test:unit
   upload-coverage:
     needs: phpunit
     runs-on: ubuntu-latest
