@@ -17,6 +17,15 @@ class InputOptions implements Stringable
         return array_key_exists($name, $this->options);
     }
 
+    private function quoteString(string $value): string
+    {
+        $value = str_replace('"', '\"', $value);
+        if (str_contains($value, ' ')) {
+            $value = '"' . $value . '"';
+        }
+        return $value;
+    }
+
     private function nameValueToString(string $name, array $values, string $separator, string $type)
     {
         $return = [];
@@ -24,7 +33,7 @@ class InputOptions implements Stringable
             if (empty($value)) {
                 $return[] = $type . $name;
             } else {
-                $return[] = $type . $name . $separator . $value;
+                $return[] = $type . $name . $separator . $this->quoteString($value);
             }
         }
         return implode(' ', $return);
