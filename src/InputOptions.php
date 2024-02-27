@@ -6,6 +6,8 @@ use Stringable;
 
 class InputOptions implements Stringable
 {
+    use QuoteStringTrait;
+
     private array $options = [];
     public function setOption(string $name, ?string $value = null)
     {
@@ -15,15 +17,6 @@ class InputOptions implements Stringable
     public function hasOption(string $name)
     {
         return array_key_exists($name, $this->options);
-    }
-
-    private function quoteString(string $value): string
-    {
-        $value = str_replace('"', '\"', $value);
-        if (str_contains($value, ' ')) {
-            $value = '"' . $value . '"';
-        }
-        return $value;
     }
 
     private function nameValueToString(string $name, array $values, string $separator, string $type)
