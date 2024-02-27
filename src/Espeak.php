@@ -6,6 +6,8 @@ use InvalidArgumentException;
 
 class Espeak
 {
+    use QuoteStringTrait;
+
     private InputOptions $inputOptions;
     public function __construct()
     {
@@ -34,7 +36,7 @@ class Espeak
         }
         $cmd = 'espeak-ng' . $options;
         if (strlen($argument) > 0) {
-            $cmd .= ' ' . $argument;
+            $cmd .= ' ' . $this->quoteString($argument);
         }
         $output = \shell_exec($cmd);
         return $output;
