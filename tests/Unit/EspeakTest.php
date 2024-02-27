@@ -4,6 +4,7 @@ namespace Libresign\Test;
 
 use InvalidArgumentException;
 use Libresign\Espeak\Espeak;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class EspeakTest extends TestCase
@@ -35,5 +36,39 @@ class EspeakTest extends TestCase
             ->setOption('stdout')
             ->execute('1');
         $this->assertNotEmpty($actual);
+    }
+
+    #[DataProvider('dataGetVoiceCode')]
+    public function testeGetVoiceCode($acceptLanguage, $expected)
+    {
+        $espeak = new Espeak();
+        $actual = $espeak->getVoiceCode($acceptLanguage);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public static function dataGetVoiceCode(): array
+    {
+        return [
+            ['', 'en'],
+            ['pt', 'pt'],
+            ['pt-BR', 'pt-br'],
+            ['pt-BR,pt;q=0.9', 'pt-br'],
+            ['invalid', 'en'],
+        ];
+    }
+
+    public function testAvailableVoicesNotEmpty()
+    {
+        $espeak = new Espeak();
+        $this->assertNotEmpty($espeak->getAvailableVoices());
+    }
+
+    public function testAvailableVoiceIsValid()
+    {
+        $espeak = new Espeak();
+        $voices = $espeak->getAvailableVoices();
+        foreach ($voices as $voice) {
+            $this->assertMatchesRegularExpression('/^[\w-]+$/', $voice);
+        }
     }
 }
