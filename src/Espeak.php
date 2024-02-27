@@ -39,4 +39,35 @@ class Espeak
         $output = \shell_exec($cmd);
         return $output;
     }
+
+    public function getVoiceCode(string $language): string
+    {
+        if (empty($language)) {
+            return 'en';
+        }
+        $language = strtolower($language);
+        $languages = explode(',', $language);
+        $voiceCode = $languages[0];
+        $voices = $this->getAvailableVoices();
+        if (!in_array($voiceCode, $voices)) {
+            return 'en';
+        }
+        return $voiceCode;
+    }
+
+    public function getAvailableVoices(): array
+    {
+        $this->setOption('voice');
+        $output = $this->execute();
+        $data = explode(PHP_EOL, $output);
+        $return = [];
+        foreach ($data as $value) {
+            preg_match('/^ +\d+ +(?<language>[\w-]+) +--/', $value, $matches);
+            if (!isset($matches['language'])) {
+                continue;
+            }
+            $return[] = $matches['language'];
+        }
+        return $return;
+    }
 }
